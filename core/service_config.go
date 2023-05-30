@@ -118,9 +118,9 @@ func (sc *ServiceConfig) LoadFromFile(filepath string) error {
 	// TODO 从配置文件中加载
 
 	sc.mode = "release"
-	sc.port = 8000
+	sc.port = 5000
 	sc.address = "localhost"
-	sc.databaseUrl = "root:123@tcp(192.168.80.3:3306)/db_blog_service?charset=utf8mb4&parseTime=True&loc=Local"
+	sc.databaseUrl = "root:melo-mysql@tcp(8.134.72.192:3306)/db_melo_cmdb?charset=utf8mb4&parseTime=True&loc=Local"
 	sc.databaseMaxIdleConnection = 10
 	sc.databaseMaxOpenConnection = 25
 	sc.databaseConnectionMaxIdleMs = 5000
