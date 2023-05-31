@@ -30,7 +30,8 @@ func BuildDatabaseTemplate() {
 			return
 		}
 
-		err2 := mysqlTemplate.AutoMigrate(&model.Auth{}, &model.Account{}, &model.Group{})
+		err2 := mysqlTemplate.AutoMigrate(&model.SMSCode{}, &model.Account{}, &model.Group{})
+
 		if err2 != nil {
 			log.Println(err2.Error())
 			return
