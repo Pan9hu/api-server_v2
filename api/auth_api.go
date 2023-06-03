@@ -39,7 +39,7 @@ func (auth *AuthAPi) Login(ctx *gin.Context) {
 	fmt.Println(username + "\n" + password)
 
 	authService := &service.AuthService{}
-	token, refresh, err := authService.LoginByUsername(username, password)
+	accessToken, refreshToken, err := authService.LoginByUsername(username, password)
 	if err != nil {
 		return
 	}
@@ -48,8 +48,8 @@ func (auth *AuthAPi) Login(ctx *gin.Context) {
 		"message": "登录成功",
 		"code":    "10000",
 		"data": gin.H{
-			"token":   token,
-			"refresh": refresh,
+			"access_token":  accessToken,
+			"refresh_token": refreshToken,
 		},
 	})
 }
