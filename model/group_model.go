@@ -10,6 +10,6 @@ type Group struct {
 	IsDelete   bool      `gorm:"column:is_delete; type:boolean; not null; comment:是否删除"`
 }
 
-func (Group) TableName() string {
+func (g *Group) TableName() string {
 	return "t_group"
 }

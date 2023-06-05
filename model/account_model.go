@@ -1,10 +1,13 @@
 package model
 
-import "time"
+import (
+	"github.com/Pan9Hu/api-server_v2/pojo"
+	"time"
+)
 
 type Account struct {
 	ID         string    `gorm:"column:id; type:varchar(255); primaryKey; comment:工号"`
-	Username   string    `gorm:"column:username; type:varchar(255)unique ;not null; comment:姓名"`
+	Name       string    `gorm:"column:name; type:varchar(255)unique ;not null; comment:姓名"`
 	Password   string    `gorm:"column:password; type:varchar(255); unique; not null; comment:密码"`
 	Phone      string    `gorm:"column:phone; type:varchar(255); unique; not null; comment:手机号码"`
 	Email      string    `gorm:"column:email; type:varchar(255); unique; not null; comment:工作邮箱"`
@@ -16,6 +19,46 @@ type Account struct {
 	IsDelete   bool      `gorm:"column:is_delete; type:boolean; not null; comment:是否删除"`
 }
 
-func (Account) TableName() string {
+func (ac *Account) TableName() string {
 	return "t_account"
+}
+
+func GetAccountByID(id string) *pojo.AccountPOJO {
+	AccountPOJO := &pojo.AccountPOJO{}
+	return AccountPOJO
+}
+
+func AllAccount() []any {
+	var accounts []any
+	return accounts
+}
+
+func GetAccount() []any {
+	// TODO 范围查找
+	var accounts []any
+	return accounts
+}
+
+func CreateAccount(ID string, Name string, Phone string, Email string, Group string, Sex string,
+	ArchGroup string, CreateTime time.Time, UpdateTime time.Time) error {
+	return nil
+}
+
+func UpdateAccount(ID string, UpdateDict map[string]any) error {
+	return nil
+}
+
+func DeleteAccountByID(id string) error {
+	return nil
+}
+
+func DeleteAccount(DeleteList []string) error {
+	return nil
+}
+
+func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
+	db := GetConnectionPool()
+	db.First(ac, username)
+	AccountPOJO := &pojo.AccountPOJO{}
+	return AccountPOJO
 }

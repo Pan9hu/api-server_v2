@@ -4,6 +4,7 @@ import (
 	api_v2 "github.com/Pan9Hu/api-server_v2/api"
 	"github.com/Pan9Hu/api-server_v2/core"
 	_ "github.com/Pan9Hu/api-server_v2/core"
+	"github.com/Pan9Hu/api-server_v2/model"
 	"github.com/gin-gonic/gin"
 	"log"
 	"strconv"
@@ -71,7 +72,7 @@ func main() {
 
 	core.BuildAppConfig("C:\\Users\\Pan9Hu\\go\\src\\github.com\\Pan9Hu\\api-server_v2\\conf\\api.properties")
 	config := core.GetAppConfig()
-	core.BuildDatabaseTemplate()
+	model.BuildDatabaseTemplate()
 	gin.SetMode(config.GetMode())
 
 	appRoute := buildRoute()

@@ -1,7 +1,7 @@
-package core
+package model
 
 import (
-	"github.com/Pan9Hu/api-server_v2/model"
+	"github.com/Pan9Hu/api-server_v2/core"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
@@ -16,7 +16,7 @@ func BuildDatabaseTemplate() {
 	var once sync.Once
 
 	once.Do(func() {
-		config := GetAppConfig()
+		config := core.GetAppConfig()
 		dsn := config.GetDatabaseUrl()
 
 		mysqlTemplate, err1 := gorm.Open(mysql.Open(dsn), &gorm.Config{
@@ -30,7 +30,7 @@ func BuildDatabaseTemplate() {
 			return
 		}
 
-		err2 := mysqlTemplate.AutoMigrate(&model.SMSCode{}, &model.Account{}, &model.Group{})
+		err2 := mysqlTemplate.AutoMigrate(&SMSCode{}, &Account{}, &Group{})
 
 		if err2 != nil {
 			log.Println(err2.Error())
