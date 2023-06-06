@@ -15,3 +15,5 @@ type Group struct {
 func (g *Group) TableName() string {
 	return "t_group"
 }
+
+// TODO CRUD方法

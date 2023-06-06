@@ -16,3 +16,5 @@ type SMSCode struct {
 func (sc *SMSCode) TableName() string {
 	return "t_sms_code"
 }
+
+// TODO CRUD方法

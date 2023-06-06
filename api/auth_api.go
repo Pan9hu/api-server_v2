@@ -48,15 +48,16 @@ func (auth *AuthAPi) Login(ctx *gin.Context) {
 }
 
 func (auth *AuthAPi) Refresh(ctx *gin.Context) {
-
+	// TODO 刷新过期Token API
 }
 
 func (auth *AuthAPi) SecurityCode(ctx *gin.Context) {
+	// TODO 忘记密码， 重置密码， 向可能的通知类型发送验证码(邮箱, 手机号码）
 
 }
 func (auth *AuthAPi) VerifyCode(ctx *gin.Context) {
-
+	// TODO 验证用户输入的验证码，从定时的数据中核对验证码。
 }
 func (auth *AuthAPi) ResetPassword(ctx *gin.Context) {
-
+	// TODO 忘记密码， 重置密码。
 }
