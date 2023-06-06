@@ -19,7 +19,7 @@ func BuildDatabaseTemplate() {
 		config := core.GetAppConfig()
 		dsn := config.GetDatabaseUrl()
 
-		mysqlTemplate, err1 := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		template, err1 := gorm.Open(mysql.Open(dsn), &gorm.Config{
 			NamingStrategy: schema.NamingStrategy{
 				// 解决查表自动添加复数问题，例如 user -> users
 				SingularTable: true,
@@ -27,19 +27,22 @@ func BuildDatabaseTemplate() {
 		})
 		if err1 != nil {
 			log.Println(err1.Error())
+			panic("MySQL: Connection failed =" + err1.Error())
 			return
 		}
 
-		err2 := mysqlTemplate.AutoMigrate(&SMSCode{}, &Account{}, &Group{})
+		err2 := template.AutoMigrate(&SMSCode{}, &Account{}, &Group{})
 
 		if err2 != nil {
 			log.Println(err2.Error())
+			panic("MySQL: Migration failed =" + err2.Error())
 			return
 		}
 
-		sqlDB, err3 := mysqlTemplate.DB()
+		sqlDB, err3 := template.DB()
 		if err3 != nil {
 			log.Println(err3.Error())
+			panic("MySQL: Configuration failed =" + err2.Error())
 			return
 		}
 
@@ -48,8 +51,8 @@ func BuildDatabaseTemplate() {
 		sqlDB.SetConnMaxIdleTime(time.Millisecond * time.Duration(config.GetDatabaseConnectionMaxIdleMs()))
 		sqlDB.SetConnMaxLifetime(time.Millisecond * time.Duration(config.GetDatabaseConnectionMaxLifeMs()))
 
+		mysqlTemplate = template
 	})
-
 }
 
 func GetConnectionPool() *gorm.DB {

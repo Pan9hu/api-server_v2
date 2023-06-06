@@ -1,9 +1,11 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type Group struct {
-	GroupName  string    `gorm:"column:group_name; type:varchar(255); primaryKey; not null; comment:组名"`
+	GroupName  string    `gorm:"column:group_name; type:varchar(255); primaryKey; comment:组名"`
 	Usage      string    `gorm:"column:usage; type:varchar(255);unique; not null; comment:用途"`
 	CreateTime time.Time `gorm:"column:create_time; type:datetime; autoCreateTime:milli; not null; comment:创建时间"`
 	UpdateTime time.Time `gorm:"column:update_time; type:datetime; autoUpdateTime:milli; not null; comment:更新时间"`

@@ -7,7 +7,7 @@ import (
 
 type Account struct {
 	ID         string    `gorm:"column:id; type:varchar(255); primaryKey; comment:工号"`
-	Name       string    `gorm:"column:name; type:varchar(255)unique ;not null; comment:姓名"`
+	Name       string    `gorm:"column:name; type:varchar(255);unique ;not null; comment:姓名"`
 	Password   string    `gorm:"column:password; type:varchar(255); unique; not null; comment:密码"`
 	Phone      string    `gorm:"column:phone; type:varchar(255); unique; not null; comment:手机号码"`
 	Email      string    `gorm:"column:email; type:varchar(255); unique; not null; comment:工作邮箱"`
@@ -23,7 +23,7 @@ func (ac *Account) TableName() string {
 	return "t_account"
 }
 
-func GetAccountByID(id string) *pojo.AccountPOJO {
+func GetAccountByUID(id string) *pojo.AccountPOJO {
 	AccountPOJO := &pojo.AccountPOJO{}
 	return AccountPOJO
 }
@@ -58,7 +58,18 @@ func DeleteAccount(DeleteList []string) error {
 
 func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
 	db := GetConnectionPool()
-	db.First(ac, username)
-	AccountPOJO := &pojo.AccountPOJO{}
-	return AccountPOJO
+	db.Where("id = ?", username).Find(&ac)
+	return &pojo.AccountPOJO{
+		ID:         ac.ID,
+		Name:       ac.Name,
+		Password:   ac.Password,
+		Phone:      ac.Phone,
+		Email:      ac.Email,
+		Group:      ac.Group,
+		Sex:        ac.Sex,
+		ArchGroup:  ac.ArchGroup,
+		CreateTime: ac.CreateTime,
+		UpdateTime: ac.UpdateTime,
+		IsDelete:   ac.IsDelete,
+	}
 }

@@ -1,9 +1,11 @@
 package model
 
-import "time"
+import (
+	"time"
+)
 
 type SMSCode struct {
-	ID          string    `gorm:"column:id; type:varchar(255)unique ;not null; comment:工号"`
+	ID          string    `gorm:"column:id; type:varchar(255);primaryKey ; comment:工号"`
 	AuthMethod  string    `gorm:"column:auth_method; type:varchar(255); not null; comment:密码"`
 	Phone       string    `gorm:"column:phone; type:varchar(255); unique; comment:手机号码"`
 	Email       string    `gorm:"column:email; type:varchar(255); unique; comment:工作邮箱"`
