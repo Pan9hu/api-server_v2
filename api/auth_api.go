@@ -35,7 +35,6 @@ func (auth *AuthAPi) Login(ctx *gin.Context) {
 		log.Printf(err.Error())
 		return
 	}
-
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "登录成功",
 		"code":    "10000",
