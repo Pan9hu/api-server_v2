@@ -15,6 +15,15 @@ const (
 	SECRET          = "6d52e21d599841d0b8c690efa9748ce4"
 )
 
+var (
+	TokenExpired       = errors.New("token is expired")
+	TokenMalformed     = errors.New("token is illegitimate")
+	TokenNotValidYet   = errors.New("token not active yet")
+	TokenErrorIssuer   = errors.New("wrong issuer")
+	TokenErrorAudience = errors.New("token audience is empty")
+	TokenInvalid       = errors.New("damaged token")
+)
+
 func GenerateToken(_id string, sub string, long bool) (string, error) {
 	//签发人(issuer)
 	//过期时间(expiration time)
@@ -71,15 +80,15 @@ func ParseToken(tokenString string) (string, error) {
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorExpired != 0 {
-				return "", errors.New("token is expired")
+				return "", TokenExpired
 			} else if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return "", errors.New("token is illegitimate")
+				return "", TokenMalformed
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return "", errors.New("token not active yet")
+				return "", TokenNotValidYet
 			} else if ve.Errors&jwt.ValidationErrorIssuer != 0 {
-				return "", errors.New("wrong issuer")
+				return "", TokenErrorIssuer
 			} else {
-				return "", errors.New("damaged token")
+				return "", TokenInvalid
 			}
 		}
 		return "", err
@@ -90,9 +99,9 @@ func ParseToken(tokenString string) (string, error) {
 		aud := strings.Trim(claims.Audience[0], "")
 
 		if len(aud) <= 0 {
-			return "", errors.New("token audience is empty")
+			return "", TokenErrorAudience
 		}
 		return aud, nil
 	}
-	return "", errors.New("damaged token")
+	return "", TokenInvalid
 }

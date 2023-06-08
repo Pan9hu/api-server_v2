@@ -1,8 +1,10 @@
 package core
 
 import (
+	"github.com/Pan9Hu/api-server_v2/util"
 	"github.com/gin-gonic/gin"
 	"log"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -18,7 +20,11 @@ type ServiceConfig struct {
 	databaseConnectionMaxLifeMs int64
 }
 
-var appConfig ServiceConfig
+var (
+	appConfig  ServiceConfig
+	stringUtil util.StringUtil
+	readFile   util.PropertyUtil
+)
 
 func (sc *ServiceConfig) GetDatabaseMaxIdleConnection() int {
 	return sc.databaseMaxIdleConnection
@@ -115,17 +121,26 @@ func (sc *ServiceConfig) GetDatabaseUrl() string {
 }
 
 func (sc *ServiceConfig) LoadFromFile(filepath string) error {
-	// TODO 从配置文件中加载
-
-	sc.mode = "debug"
-	sc.port = 8000
-	sc.address = "localhost"
-	sc.databaseUrl = "root:melo-mysql@tcp(8.134.72.192:3306)/db_melo_cmdb?charset=utf8mb4&parseTime=True&loc=Local"
-	sc.databaseMaxIdleConnection = 10
-	sc.databaseMaxOpenConnection = 25
-	sc.databaseConnectionMaxIdleMs = 5000
-	sc.databaseConnectionMaxLifeMs = 10000
-	return nil
+	if filePath, err := stringUtil.SmartTrim(filepath); err != nil {
+		return err
+	} else {
+		file, fileErr := readFile.ReadPropertiesFile(filePath)
+		if fileErr != nil {
+			return fileErr
+		} else {
+			maxIdleMs, _ := strconv.Atoi(file["service.database.connection-max-idle-ms"])
+			maxLifeMs, _ := strconv.Atoi(file["service.database.connection-max-life-ms"])
+			sc.mode = file["service.mode"]
+			sc.port, _ = strconv.Atoi(file["service.port"])
+			sc.address = file["service.address"]
+			sc.databaseUrl = file["service.database.url"]
+			sc.databaseMaxIdleConnection, _ = strconv.Atoi(file["service.database.max-idle-connection"])
+			sc.databaseMaxOpenConnection, _ = strconv.Atoi(file["service.database.max-open-connection"])
+			sc.databaseConnectionMaxIdleMs = int64(maxIdleMs)
+			sc.databaseConnectionMaxLifeMs = int64(maxLifeMs)
+			return nil
+		}
+	}
 }
 
 func BuildAppConfig(filepath string) {

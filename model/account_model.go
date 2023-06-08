@@ -23,42 +23,7 @@ func (ac *Account) TableName() string {
 	return "t_account"
 }
 
-func GetAccountByUID(id string) *pojo.AccountPOJO {
-	AccountPOJO := &pojo.AccountPOJO{}
-	return AccountPOJO
-}
-
-func AllAccount() []any {
-	var accounts []any
-	return accounts
-}
-
-func GetAccount() []any {
-	// TODO 范围查找
-	var accounts []any
-	return accounts
-}
-
-func CreateAccount(ID string, Name string, Phone string, Email string, Group string, Sex string,
-	ArchGroup string, CreateTime time.Time, UpdateTime time.Time) error {
-	return nil
-}
-
-func UpdateAccount(ID string, UpdateDict map[string]any) error {
-	return nil
-}
-
-func DeleteAccountByID(id string) error {
-	return nil
-}
-
-func DeleteAccount(DeleteList []string) error {
-	return nil
-}
-
-func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
-	db := GetConnectionPool()
-	db.Where("id = ?", username).Find(&ac)
+func (ac *Account) GetAccountByUID(id string) *pojo.AccountPOJO {
 	return &pojo.AccountPOJO{
 		ID:         ac.ID,
 		Name:       ac.Name,
@@ -71,5 +36,43 @@ func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
 		CreateTime: ac.CreateTime,
 		UpdateTime: ac.UpdateTime,
 		IsDelete:   ac.IsDelete,
+	}
+}
+
+func (ac *Account) AllAccount() []any {
+	var accounts []any
+	return accounts
+}
+
+func (ac *Account) GetAccount() []any {
+	// TODO 范围查找
+	var accounts []any
+	return accounts
+}
+
+func (ac *Account) CreateAccount(ID string, Name string, Phone string, Email string, Group string, Sex string,
+	ArchGroup string, CreateTime time.Time, UpdateTime time.Time) error {
+	return nil
+}
+
+func (ac *Account) UpdateAccount(ID string, UpdateDict map[string]any) error {
+	return nil
+}
+
+func (ac *Account) DeleteAccountByID(id string) error {
+	return nil
+}
+
+func (ac *Account) DeleteAccount(DeleteList []string) error {
+	return nil
+}
+
+func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
+	db := GetConnectionPool()
+	db.Where("id = ?", username).Find(&ac)
+	return &pojo.AccountPOJO{
+		ID:       ac.ID,
+		Password: ac.Password,
+		IsDelete: ac.IsDelete,
 	}
 }
