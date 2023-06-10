@@ -9,7 +9,7 @@ RUN go env -w GO111MODULE=on \
     && go env -w CGO_ENABLED=0 \
     && go env \
     && go mod tidy \
-    && go build api-server-v2 .
+    && go build -o api-server .
 
 FROM alpine:latest
 
@@ -19,10 +19,9 @@ LABEL author="Pan9Hu" \
 
 WORKDIR /go/src/github.com/Pan9Hu/api-server-v2
 
-COPY --from=0 /go/src/github.com/Pan9Hu/api-server-v2 ./
-COPY --from=0 /go/src/github.com/Pan9Hu/api-server-v2/resource ./resource/
+COPY --from=0 /go/src/github.com/Pan9Hu/api-server-v2/api-server ./
 COPY --from=0 /go/src/github.com/Pan9Hu/api-server-v2/conf/api.properties ./
 
 EXPOSE 8000
 
-ENTRYPOINT ./api-server-v2 -c api.properties
+ENTRYPOINT ./api-server -c api.properties
