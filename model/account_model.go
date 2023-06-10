@@ -69,7 +69,7 @@ func (ac *Account) DeleteAccount(DeleteList []string) error {
 
 func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
 	db := GetConnectionPool()
-	db.Where("id = ?", username).Find(&ac)
+	db.Select("id", "password", "is_delete").Where("id = ?", username).Find(&ac)
 	return &pojo.AccountPOJO{
 		ID:       ac.ID,
 		Password: ac.Password,
