@@ -9,6 +9,7 @@ Go-Gin后端框架重写Melo CMDB API Server
 ```shell
 ├── api
 │   └── v2
+├── cmd
 ├── conf
 ├── core
 ├── dto
@@ -28,6 +29,7 @@ Go-Gin后端框架重写Melo CMDB API Server
 |----| ----------------------- | --------------------------- |
 | `api` |api层|api层|
 | `v2` |v2版本接口|v2版本接口|
+| `cmd` |命令包|存放命令行相关函数|
 | `conf` |配置包|存放相关配置文件|
 | `core` |核心文件|核心组件（server）的初始化|
 | `dto` |数据传输对象|存放对应的传输对象结构体|
