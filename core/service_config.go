@@ -1,10 +1,9 @@
 package core
 
 import (
-	"github.com/Pan9Hu/api-server_v2/util"
+	"github.com/Pan9Hu/api-server_v2/conf"
 	"github.com/gin-gonic/gin"
 	"log"
-	"strconv"
 	"strings"
 	"sync"
 )
@@ -20,11 +19,7 @@ type ServiceConfig struct {
 	databaseConnectionMaxLifeMs int64
 }
 
-var (
-	appConfig  ServiceConfig
-	stringUtil util.StringUtil
-	readFile   util.PropertyUtil
-)
+var appConfig ServiceConfig
 
 func (sc *ServiceConfig) GetDatabaseMaxIdleConnection() int {
 	return sc.databaseMaxIdleConnection
@@ -120,36 +115,29 @@ func (sc *ServiceConfig) GetDatabaseUrl() string {
 	return sc.databaseUrl
 }
 
-func (sc *ServiceConfig) LoadFromFile(filepath string) error {
-	if filePath, err := stringUtil.SmartTrim(filepath); err != nil {
+func (sc *ServiceConfig) LoadFromFile() error {
+	err := conf.MeloVP.ReadInConfig() // 检验配置是否可读
+	if err != nil {
 		return err
-	} else {
-		file, fileErr := readFile.ReadPropertiesFile(filePath)
-		if fileErr != nil {
-			return fileErr
-		} else {
-			maxIdleMs, _ := strconv.Atoi(file["service.database.connection-max-idle-ms"])
-			maxLifeMs, _ := strconv.Atoi(file["service.database.connection-max-life-ms"])
-			sc.mode = file["service.mode"]
-			sc.port, _ = strconv.Atoi(file["service.port"])
-			sc.address = file["service.address"]
-			sc.databaseUrl = file["service.database.url"]
-			sc.databaseMaxIdleConnection, _ = strconv.Atoi(file["service.database.max-idle-connection"])
-			sc.databaseMaxOpenConnection, _ = strconv.Atoi(file["service.database.max-open-connection"])
-			sc.databaseConnectionMaxIdleMs = int64(maxIdleMs)
-			sc.databaseConnectionMaxLifeMs = int64(maxLifeMs)
-			return nil
-		}
 	}
+	sc.mode = conf.MeloVP.GetString("service.mode")
+	sc.port = conf.MeloVP.GetInt("service.port")
+	sc.address = conf.MeloVP.GetString("service.address")
+	sc.databaseUrl = conf.MeloVP.GetString("service.database.url")
+	sc.databaseMaxIdleConnection = conf.MeloVP.GetInt("service.database.max-idle-connection")
+	sc.databaseMaxOpenConnection = conf.MeloVP.GetInt("service.database.max-open-connection")
+	sc.databaseConnectionMaxIdleMs = conf.MeloVP.GetInt64("service.database.connection-max-idle-ms")
+	sc.databaseConnectionMaxLifeMs = conf.MeloVP.GetInt64("service.database.connection-max-life-ms")
+	return nil
 }
 
-func BuildAppConfig(filepath string) {
+func BuildAppConfig() {
 	var once sync.Once
 
 	once.Do(func() {
-		err := appConfig.LoadFromFile(filepath)
+		err := appConfig.LoadFromFile()
 		if err != nil {
-			log.Fatalln("load config failed: ", err.Error())
+			log.Fatalln("[Error] load config failed: ", err.Error())
 		}
 	})
 }

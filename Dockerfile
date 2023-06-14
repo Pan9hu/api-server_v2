@@ -24,4 +24,4 @@ COPY --from=0 /go/src/github.com/Pan9Hu/api-server-v2/conf/api.properties ./
 
 EXPOSE 8000
 
-ENTRYPOINT ./api-server config api.properties
+ENTRYPOINT ./api-server -c api.properties

@@ -1,0 +1,11 @@
+service:
+  listen:
+    - port: 8000
+    - address: localhost
+  mode: debug
+  datasource:
+    - url: root:melo-mysql@tcp(8.134.72.192:3306)/db_melo_cmdb?charset=utf8mb4&parseTime=True&loc=Local
+    - maxIdleConnection: 10
+    - maxOpenConnection: 25
+    - connectionMaxIdleMs: 5000
+    - connectionMaxLifeMs: 10000

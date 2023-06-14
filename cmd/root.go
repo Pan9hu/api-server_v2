@@ -1,20 +1,18 @@
 package cmd
 
 import (
+	"github.com/Pan9Hu/api-server_v2/conf"
+	"github.com/Pan9Hu/api-server_v2/core"
 	"github.com/lithammer/dedent"
 	"github.com/spf13/cobra"
 	"log"
 )
 
-func init() {
-	rootCmd.AddCommand(configCmd)
-	rootCmd.AddCommand(versionCmd)
-}
+var cfgFile string
 
 var rootCmd = &cobra.Command{
 	Use:   "api-server",
 	Short: "API Server is a stateless service",
-	Args:  cobra.MinimumNArgs(1),
 	Long: dedent.Dedent(`
 			┌───────────────────────────────────────────────────────────────────────────────┐
 			│ API Server                                                                    │
@@ -40,9 +38,9 @@ var rootCmd = &cobra.Command{
 			└──────────────────────────────────────────────────────────┘
 
 			You can use api-server -h or api-server --help get more support.`),
-	Run: func(cmd *cobra.Command, args []string) {
-		// Do something
-	},
+	//Run: func(cmd *cobra.Command, args []string) {
+	//	// Do something
+	//},
 }
 
 func Execute() {
@@ -50,4 +48,12 @@ func Execute() {
 		log.Fatalln("[Error] start melo api server error, because: ", err.Error())
 		return
 	}
+	defer func() {
+		conf.MeloVP = core.Configure(cfgFile)
+	}()
+}
+
+func init() {
+	rootCmd.AddCommand(versionCmd)
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Start the API Server from a configuration file")
 }
