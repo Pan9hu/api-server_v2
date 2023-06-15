@@ -1,26 +1,23 @@
-package core
+package router
 
 import (
+	"github.com/Pan9Hu/api-server_v2/core"
+	"github.com/Pan9Hu/api-server_v2/core/response"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 )
 
 func AttachHealthCheckRoute(engine *gin.Engine) {
-	config := GetAppConfig()
-
+	cfg := core.GetAppConfig()
+	msg := "this service is running on " + cfg.GetAddress() + ":" + strconv.Itoa(cfg.GetPort())
 	// 心跳检测
 	engine.GET("ping", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "pong")
-
 	})
 
 	// 健康检测
 	engine.GET("health", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, gin.H{
-			"code":    "10000",
-			"message": "this service is running on " + config.GetAddress() + ":" + strconv.Itoa(config.GetPort()),
-			"data":    nil,
-		})
+		response.OkWithMessage(msg, ctx)
 	})
 }

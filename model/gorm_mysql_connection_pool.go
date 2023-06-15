@@ -27,7 +27,7 @@ func BuildDatabaseTemplate() {
 		})
 		if err1 != nil {
 			log.Println(err1.Error())
-			panic("MySQL: Connection failed =" + err1.Error())
+			panic("[MySQL] Connection failed :" + err1.Error())
 			return
 		}
 
@@ -35,14 +35,14 @@ func BuildDatabaseTemplate() {
 
 		if err2 != nil {
 			log.Println(err2.Error())
-			panic("MySQL: Migration failed =" + err2.Error())
+			panic("[MySQL] Migration failed :" + err2.Error())
 			return
 		}
 
 		sqlDB, err3 := template.DB()
 		if err3 != nil {
 			log.Println(err3.Error())
-			panic("MySQL: Configuration failed =" + err2.Error())
+			panic("[MySQL] Configuration failed :" + err2.Error())
 			return
 		}
 

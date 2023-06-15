@@ -18,6 +18,5 @@ func (r *GroupRouter) InitGroupRouter(Router *gin.RouterGroup) {
 		groupRouter.DELETE(":name", v2GroupAPI.DeleteGroupByName) //通过组名删除组
 		groupRouter.DELETE("", v2GroupAPI.DeleteGroup)            //删除组
 		groupRouter.PUT(":name", v2GroupAPI.UpdateGroupByName)    //通过组名更新组
-
 	}
 }

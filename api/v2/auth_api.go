@@ -17,7 +17,7 @@ func (auth *AuthAPI) Login(ctx *gin.Context) {
 
 	err := ctx.ShouldBind(&params)
 	if err != nil {
-		log.Printf(err.Error())
+		log.Printf("[Error] get parames failed: %v ", err.Error())
 		return
 	}
 
@@ -25,7 +25,7 @@ func (auth *AuthAPI) Login(ctx *gin.Context) {
 	bPassword, decodeErr := base64.StdEncoding.DecodeString(params.Password)
 	password := string(bPassword)
 	if decodeErr != nil {
-		log.Printf(decodeErr.Error())
+		log.Printf("[Error] decode failed: %v ", decodeErr.Error())
 		return
 	}
 
@@ -43,7 +43,7 @@ func (auth *AuthAPI) Login(ctx *gin.Context) {
 			response.FailWithDetailed(tokenErr.Error(), "50000", gin.H{}, ctx)
 			return
 		} else {
-			response.FailWithDetailed("fetch token fails", "40000", gin.H{}, ctx)
+			response.FailWithDetailed("fetch token failed", "40000", gin.H{}, ctx)
 			return
 		}
 	}

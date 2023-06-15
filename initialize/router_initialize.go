@@ -1,14 +1,14 @@
 package initialize
 
 import (
-	"github.com/Pan9Hu/api-server_v2/core"
 	"github.com/Pan9Hu/api-server_v2/router"
 	"github.com/gin-gonic/gin"
 )
 
 func BuildRoute() *gin.Engine {
 	Router := gin.Default()
-	core.AttachHealthCheckRoute(Router) // 健康检查
+	router.AttachHealthCheckRoute(Router) // 健康检查
+	router.VersionRoute(Router)           // 获取API Server版本
 	routers := router.RouterGroupApp.Routers
 	v2 := Router.Group("v2")
 	{

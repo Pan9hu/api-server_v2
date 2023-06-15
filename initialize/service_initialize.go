@@ -9,7 +9,7 @@ import (
 )
 
 func InitService() {
-	log.Println("[INFO] starting the Melo API Server...")
+	log.Println("[Info] starting the Melo API Server...")
 
 	// 初始化服务
 	core.BuildAppConfig()
