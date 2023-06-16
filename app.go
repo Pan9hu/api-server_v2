@@ -6,11 +6,6 @@ import (
 )
 
 func main() {
-	// TODO 环境变量
-
-	// TODO --port --address 参数
-
-	// TODO 默认目录
 	cmd.Execute()
 	initialize.InitService()
 }

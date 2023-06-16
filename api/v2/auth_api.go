@@ -37,13 +37,13 @@ func (auth *AuthAPI) Login(ctx *gin.Context) {
 			response.FailWithMessage(tokenErr.Error(), ctx)
 			return
 		} else if tokenErr.Error() == "wrong password" {
-			response.FailWithDetailed(tokenErr.Error(), "30000", gin.H{}, ctx)
+			response.FailWithDetailed(tokenErr.Error(), "30000", nil, ctx)
 			return
 		} else if tokenErr.Error() == "wrong server" {
-			response.FailWithDetailed(tokenErr.Error(), "50000", gin.H{}, ctx)
+			response.FailWithDetailed(tokenErr.Error(), "50000", nil, ctx)
 			return
 		} else {
-			response.FailWithDetailed("fetch token failed", "40000", gin.H{}, ctx)
+			response.FailWithDetailed("fetch token failed", "40000", nil, ctx)
 			return
 		}
 	}

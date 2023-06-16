@@ -116,18 +116,19 @@ func (sc *ServiceConfig) GetDatabaseUrl() string {
 }
 
 func (sc *ServiceConfig) LoadFromFile() error {
-	err := conf.MeloVP.ReadInConfig() // 检验配置是否可读
+	vp := conf.GetViper()
+	err := vp.ReadInConfig() // 检验配置是否可读
 	if err != nil {
 		return err
 	}
-	sc.mode = conf.MeloVP.GetString("service.mode")
-	sc.port = conf.MeloVP.GetInt("service.port")
-	sc.address = conf.MeloVP.GetString("service.address")
-	sc.databaseUrl = conf.MeloVP.GetString("service.database.url")
-	sc.databaseMaxIdleConnection = conf.MeloVP.GetInt("service.database.max-idle-connection")
-	sc.databaseMaxOpenConnection = conf.MeloVP.GetInt("service.database.max-open-connection")
-	sc.databaseConnectionMaxIdleMs = conf.MeloVP.GetInt64("service.database.connection-max-idle-ms")
-	sc.databaseConnectionMaxLifeMs = conf.MeloVP.GetInt64("service.database.connection-max-life-ms")
+	sc.mode = vp.GetString("service.mode")
+	sc.port = vp.GetInt("service.port")
+	sc.address = vp.GetString("service.address")
+	sc.databaseUrl = vp.GetString("service.database.url")
+	sc.databaseMaxIdleConnection = vp.GetInt("service.database.max-idle-connection")
+	sc.databaseMaxOpenConnection = vp.GetInt("service.database.max-open-connection")
+	sc.databaseConnectionMaxIdleMs = vp.GetInt64("service.database.connection-max-idle-ms")
+	sc.databaseConnectionMaxLifeMs = vp.GetInt64("service.database.connection-max-life-ms")
 	return nil
 }
 

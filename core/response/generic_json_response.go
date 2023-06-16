@@ -25,10 +25,10 @@ func Build(message string, code string, data any, ctx *gin.Context) {
 }
 
 func Ok(ctx *gin.Context) {
-	Build("完成", SUCCESS, map[string]any{}, ctx)
+	Build("完成", SUCCESS, nil, ctx)
 }
 func OkWithMessage(message string, ctx *gin.Context) {
-	Build(message, SUCCESS, map[string]any{}, ctx)
+	Build(message, SUCCESS, nil, ctx)
 }
 
 func OkWithData(data any, ctx *gin.Context) {
@@ -40,11 +40,11 @@ func OkWithDetailed(message string, code string, data any, ctx *gin.Context) {
 }
 
 func Fail(ctx *gin.Context) {
-	Build("失败", ERROR, map[string]any{}, ctx)
+	Build("失败", ERROR, nil, ctx)
 }
 
 func FailWithMessage(message string, ctx *gin.Context) {
-	Build(message, ERROR, map[string]any{}, ctx)
+	Build(message, ERROR, nil, ctx)
 }
 
 func FailWithDetailed(message string, code string, data any, ctx *gin.Context) {

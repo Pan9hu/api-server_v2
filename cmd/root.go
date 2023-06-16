@@ -6,7 +6,10 @@ import (
 	"github.com/lithammer/dedent"
 	"github.com/spf13/cobra"
 	"log"
+	"os"
 )
+
+// TODO --port --address 参数
 
 var cfgFile string
 
@@ -38,9 +41,6 @@ var rootCmd = &cobra.Command{
 			└──────────────────────────────────────────────────────────┘
 
 			You can use api-server -h or api-server --help get more support.`),
-	//Run: func(cmd *cobra.Command, args []string) {
-	//	// Do something
-	//},
 }
 
 func Execute() {
@@ -49,7 +49,11 @@ func Execute() {
 		return
 	}
 	defer func() {
-		conf.MeloVP = core.Configure(cfgFile)
+		if len(cfgFile) < 1 {
+			os.Exit(1)
+		} else {
+			conf.MeloVP = core.Configure(cfgFile)
+		}
 	}()
 }
 
