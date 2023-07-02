@@ -25,7 +25,7 @@ func (ac *Account) TableName() string {
 
 func (ac *Account) GetAccountByUID(id string) *pojo.AccountPOJO {
 	return &pojo.AccountPOJO{
-		ID:         ac.ID,
+		Username:   ac.ID,
 		Name:       ac.Name,
 		Password:   ac.Password,
 		Phone:      ac.Phone,
@@ -39,8 +39,10 @@ func (ac *Account) GetAccountByUID(id string) *pojo.AccountPOJO {
 	}
 }
 
-func (ac *Account) AllAccount() []any {
-	var accounts []any
+func (ac *Account) AllAccount() []struct{} {
+	var accounts []struct{}
+	db := GetConnectionPool()
+	db.Select("*").Where("is_delete = ?", 1).Find(&ac)
 	return accounts
 }
 
@@ -71,7 +73,7 @@ func (ac *Account) AuthUser(username string) *pojo.AccountPOJO {
 	db := GetConnectionPool()
 	db.Select("id", "password", "is_delete").Where("id = ?", username).Find(&ac)
 	return &pojo.AccountPOJO{
-		ID:       ac.ID,
+		Username: ac.ID,
 		Password: ac.Password,
 		IsDelete: ac.IsDelete,
 	}

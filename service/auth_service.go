@@ -3,7 +3,6 @@ package service
 import (
 	"errors"
 	"github.com/Pan9Hu/api-server_v2/model"
-	"github.com/Pan9Hu/api-server_v2/util"
 	"log"
 )
 
@@ -14,10 +13,10 @@ func (as *AuthService) LoginByUsername(username, password string) (string, strin
 	var account *model.Account
 	accountPojo := account.AuthUser(username)
 	if accountPojo.IsDelete == false {
-		if accountPojo.GetID() == username {
+		if accountPojo.GetUsername() == username {
 			if accountPojo.GetPassword() == password {
-				if accessToken, accessErr := util.GenerateToken(username, "login", true); accessErr == nil {
-					if refreshToke, refreshErr := util.GenerateToken(username, "login", false); refreshErr == nil {
+				if accessToken, accessErr := JWTUtil.GenerateToken(username, "login", true); accessErr == nil {
+					if refreshToke, refreshErr := JWTUtil.GenerateToken(username, "login", false); refreshErr == nil {
 						// 返回获取的长、短Token
 						return accessToken, refreshToke, nil
 					} else if refreshErr != nil {

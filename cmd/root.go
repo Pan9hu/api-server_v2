@@ -50,7 +50,7 @@ func Execute() {
 	}
 	defer func() {
 		if len(cfgFile) < 1 {
-			os.Exit(1)
+			os.Exit(0)
 		} else {
 			conf.MeloVP = core.Configure(cfgFile)
 		}

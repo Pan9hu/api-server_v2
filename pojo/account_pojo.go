@@ -3,7 +3,7 @@ package pojo
 import "time"
 
 type AccountPOJO struct {
-	ID         string
+	Username   string
 	Name       string
 	Password   string
 	Phone      string
@@ -20,12 +20,12 @@ var account AccountPOJO
 
 // ID =================
 
-func (ac *AccountPOJO) GetID() string {
-	return ac.ID
+func (ac *AccountPOJO) GetUsername() string {
+	return ac.Username
 }
 
-func (ac *AccountPOJO) SetID(s string) error {
-	ac.ID = s
+func (ac *AccountPOJO) SetUsername(s string) error {
+	ac.Username = s
 	return nil
 }
 

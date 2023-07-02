@@ -9,9 +9,12 @@ import (
 	"time"
 )
 
+type JWTUtil struct {
+}
+
 const (
-	ACCESSTOKENTTL  = 1 //60 * 2
-	REFRESHTOKENTTL = 2 //60 * 24 * 30
+	ACCESSTOKENTTL  = 5  //60 * 2
+	REFRESHTOKENTTL = 10 //60 * 24 * 30
 	SECRET          = "6d52e21d599841d0b8c690efa9748ce4"
 )
 
@@ -24,7 +27,7 @@ var (
 	TokenInvalid       = errors.New("damaged token")
 )
 
-func GenerateToken(_id string, sub string, long bool) (string, error) {
+func (ju *JWTUtil) GenerateToken(_id string, sub string, long bool) (string, error) {
 	//签发人(issuer)
 	//过期时间(expiration time)
 	//主题(subject)
@@ -69,7 +72,7 @@ func GenerateToken(_id string, sub string, long bool) (string, error) {
 	return tokenS, nil
 }
 
-func ParseToken(tokenString string) (string, error) {
+func (ju *JWTUtil) ParseToken(tokenString string) (string, error) {
 
 	token, err := jwt.ParseWithClaims(tokenString, &jwt.RegisteredClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {

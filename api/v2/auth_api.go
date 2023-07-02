@@ -12,10 +12,14 @@ import (
 type AuthAPI struct {
 }
 
+var (
+	authService service.AuthService
+)
+
 func (auth *AuthAPI) Login(ctx *gin.Context) {
 	params := &dto.LoginDTO{}
 
-	err := ctx.ShouldBind(&params)
+	err := ctx.ShouldBindJSON(&params)
 	if err != nil {
 		log.Printf("[Error] get parames failed: %v ", err.Error())
 		return
@@ -29,7 +33,7 @@ func (auth *AuthAPI) Login(ctx *gin.Context) {
 		return
 	}
 
-	authService := &service.AuthService{}
+	// 生成X-Auth-Token 前端需要将token放置在localStorage中
 	accessToken, refreshToken, tokenErr := authService.LoginByUsername(username, password)
 	if tokenErr != nil {
 		log.Printf("[Login] Error: %v ", tokenErr.Error())
@@ -51,7 +55,8 @@ func (auth *AuthAPI) Login(ctx *gin.Context) {
 		gin.H{
 			"access_token":  accessToken,
 			"refresh_token": refreshToken,
-			"username":      username},
+			"username":      username,
+		},
 		ctx,
 	)
 }
